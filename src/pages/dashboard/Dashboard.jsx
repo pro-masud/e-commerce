@@ -73,6 +73,7 @@ const paths = {
   blank: "M6 2h9l4 4v16H6z",
   bell: "M6 16V11a6 6 0 1112 0v5l2 2H4zM10 21h4",
   search: "M11 18a7 7 0 100-14 7 7 0 000 14zM20 20l-4-4",
+  menu: "M4 6h16M4 12h16M4 18h16",
   code: "M8 7l-5 5 5 5M16 7l5 5-5 5",
   table: "M3 4h18v16H3zM3 10h18M3 15h18M9 4v16",
   card: "M3 6h18v12H3zM6 10h12M6 14h6",
@@ -191,8 +192,8 @@ const StatusChart = () => (
   </div>
 );
 
-const NavItem = ({ icon, children, href = "#" }) => (
-  <a href={href} className="item">
+const NavItem = ({ icon, children, href = "#", active = false }) => (
+  <a href={href} className={`item${active ? " on" : ""}`}>
     <Icon name={icon} size={15} />
     <span>{children}</span>
   </a>
@@ -217,6 +218,7 @@ const StatProgress = ({ label, value, color }) => (
 export const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [openMenu, setOpenMenu] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const searchResults = dashboardSearchItems.filter(({ title, detail }) =>
     `${title} ${detail}`.toLowerCase().includes(search.trim().toLowerCase()),
@@ -229,6 +231,15 @@ export const Dashboard = () => {
   return (
     <div className="dc">
     <header className="dc-top">
+      <button
+        className="mobile-nav-toggle"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-expanded={sidebarOpen}
+        onClick={() => setSidebarOpen((isOpen) => !isOpen)}
+      >
+        <Icon name="menu" size={20} />
+      </button>
       <div className="dc-logo">
         <span>DOC</span>
         <span className="c">CURE</span>
@@ -338,9 +349,17 @@ export const Dashboard = () => {
       </div>
     </header>
 
-    <aside className="dc-side">
+    {sidebarOpen && (
+      <button
+        className="sidebar-backdrop"
+        type="button"
+        aria-label="Close navigation"
+        onClick={() => setSidebarOpen(false)}
+      />
+    )}
+    <aside className={`dc-side${sidebarOpen ? " mobile-open" : ""}`}>
       <div className="sec">Main</div>
-      <NavItem icon="home" href="/dashboard">Dashboard</NavItem>
+      <NavItem icon="home" href="/" active>Dashboard</NavItem>
       <NavItem icon="layout" href="/appointments">Appointments</NavItem>
       <NavItem icon="users" href="/specialities">Specialities</NavItem>
       <NavItem icon="user" href="/doctors">Doctors</NavItem>
@@ -378,8 +397,17 @@ export const Dashboard = () => {
     </aside>
 
     <main className="dc-main">
-      <h1>Welcome Admin!</h1>
-      <div className="crumb">Dashboard</div>
+      <div className="page-heading">
+        <div>
+          <div className="crumb">OVERVIEW / DASHBOARD</div>
+          <h1>Welcome back, Admin <span aria-hidden="true">👋</span></h1>
+          <p>Here&apos;s what&apos;s happening at your clinic today.</p>
+        </div>
+        <div className="date-chip">
+          <span className="date-dot" />
+          Clinic overview
+        </div>
+      </div>
 
       <section className="stats" id="stats">
         <div className="card stat">
@@ -390,6 +418,7 @@ export const Dashboard = () => {
             <strong>168</strong>
           </div>
           <div className="lbl">Doctors</div>
+          <div className="stat-note"><span>+8.2%</span> from last month</div>
           <StatProgress label="Doctors" value={53} color="#1ab7ea" />
         </div>
         <div className="card stat">
@@ -400,6 +429,7 @@ export const Dashboard = () => {
             <strong>487</strong>
           </div>
           <div className="lbl">Patients</div>
+          <div className="stat-note"><span>+12.5%</span> from last month</div>
           <StatProgress label="Patients" value={68} color="#3f7d1d" />
         </div>
         <div className="card stat">
@@ -410,6 +440,7 @@ export const Dashboard = () => {
             <strong>485</strong>
           </div>
           <div className="lbl">Appointment</div>
+          <div className="stat-note"><span>+4.3%</span> from last month</div>
           <StatProgress label="Appointments" value={46} color="#d9261c" />
         </div>
         <div className="card stat">
@@ -420,24 +451,34 @@ export const Dashboard = () => {
             <strong>$62523</strong>
           </div>
           <div className="lbl">Revenue</div>
+          <div className="stat-note"><span>+9.8%</span> from last month</div>
           <StatProgress label="Revenue" value={72} color="#f5a30f" />
         </div>
       </section>
 
       <section className="two" id="charts">
         <div className="card">
-          <h2>Revenue</h2>
+          <div className="card-heading">
+            <div><h2>Revenue overview</h2><p>Annual revenue performance</p></div>
+            <span className="card-period">2013–2017</span>
+          </div>
           <div className="pad"><RevenueChart /></div>
         </div>
         <div className="card">
-          <h2>Status</h2>
+          <div className="card-heading">
+            <div><h2>Appointment status</h2><p>Completed vs pending</p></div>
+            <span className="card-period">2015–2019</span>
+          </div>
           <div className="pad"><StatusChart /></div>
         </div>
       </section>
 
       <section className="two">
         <div className="card" id="doctors-list">
-          <h2>Doctors List</h2>
+          <div className="card-heading">
+            <div><h2>Top doctors</h2><p>Performance and patient reviews</p></div>
+            <a className="table-action" href="/doctors">View doctors</a>
+          </div>
           <table>
             <thead>
               <tr><th>Doctor Name</th><th>Speciality</th><th>Earned</th><th>Reviews</th></tr>
@@ -452,7 +493,10 @@ export const Dashboard = () => {
           </table>
         </div>
         <div className="card" id="patients-list">
-          <h2>Patients List</h2>
+          <div className="card-heading">
+            <div><h2>Recent patients</h2><p>Latest patient activity</p></div>
+            <a className="table-action" href="/patients">View patients</a>
+          </div>
           <table>
             <thead>
               <tr><th>Patient Name</th><th>Phone</th><th>Last Visit</th><th>Paid</th></tr>
