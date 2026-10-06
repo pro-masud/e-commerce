@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./login.css";
 
-export const Login = () => {
+export const Forgot = () => {
   return (
     <div className="login-page">
       <div className="login-card">
@@ -27,8 +27,10 @@ export const Login = () => {
         {/* Right form panel */}
         <div className="login-form-wrap">
           <form className="login-form" noValidate>
-            <h1 className="login-title">Login</h1>
-            <p className="login-subtitle">Access to our dashboard</p>
+            <h1 className="login-title">Forgot Password</h1>
+            <p className="login-subtitle">
+              Enter your email to reset your password
+            </p>
 
             <input
               type="email"
@@ -38,20 +40,12 @@ export const Login = () => {
               aria-label="Email"
             />
 
-            <input
-              type="password"
-              className="login-input"
-              placeholder="Password"
-              autoComplete="current-password"
-              aria-label="Password"
-            />
-
             <button type="submit" className="login-button">
-              Login
+              Reset Password
             </button>
 
-            <Link to="/forgot-password" className="login-forgot">
-              Forgot Password?
+            <Link to="/login" className="login-forgot">
+              Remember your password? Login
             </Link>
 
             <div className="login-divider">
