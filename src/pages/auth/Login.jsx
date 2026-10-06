@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./login.css";
 
 export const Login = () => {
@@ -58,7 +59,7 @@ export const Login = () => {
             </div>
 
             <p className="login-register">
-              Don&apos;t have an account? <a href="/register">Register</a>
+              Don&apos;t have an account? <Link to="/register">Register</Link>
             </p>
           </form>
         </div>
