@@ -377,15 +377,30 @@ h1 {
   font-size: 11px;
   font-weight: 600;
 }
-.bar {
+.stat-progress {
   height: 4px;
   background: #e1e3e7;
   border-radius: 2px;
+  overflow: hidden;
 }
-.bar i {
+.stat-progress-fill {
   display: block;
   height: 100%;
   border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: fill-progress 900ms ease-out forwards;
+}
+@keyframes fill-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stat-progress-fill {
+    animation: none;
+    transform: scaleX(1);
+  }
 }
 .two {
   display: grid;
@@ -395,6 +410,10 @@ h1 {
 }
 .pad {
   padding: 14px 14px 10px;
+}
+.chart-container {
+  width: 100%;
+  height: 280px;
 }
 table {
   width: 100%;
