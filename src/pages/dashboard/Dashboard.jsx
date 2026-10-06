@@ -72,6 +72,7 @@ const paths = {
   alert: "M12 22a10 10 0 100-20 10 10 0 000 20zM12 7v6M12 16.5v.5",
   blank: "M6 2h9l4 4v16H6z",
   bell: "M6 16V11a6 6 0 1112 0v5l2 2H4zM10 21h4",
+  search: "M11 18a7 7 0 100-14 7 7 0 000 14zM20 20l-4-4",
   code: "M8 7l-5 5 5 5M16 7l5 5-5 5",
   table: "M3 4h18v16H3zM3 10h18M3 15h18M9 4v16",
   card: "M3 6h18v12H3zM6 10h12M6 14h6",
@@ -291,13 +292,7 @@ export const Dashboard = () => {
                 </span>
               </div>
             ))}
-            <Link
-              className="menu-footer"
-              to="/notifications"
-              onClick={() => setOpenMenu(null)}
-            >
-              View all notifications
-            </Link>
+            <div className="menu-footer">Your latest notifications</div>
           </div>
         )}
       </div>
