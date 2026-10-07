@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import {
   Area,
   AreaChart,
@@ -12,52 +11,24 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import Header from "../../components/Dashboard/Header/Header";
 import "./dashboard.css";
 
-const revenueData = [
-  { year: "2013", revenue: 60 },
-  { year: "2014", revenue: 110 },
-  { year: "2015", revenue: 180 },
-  { year: "2016", revenue: 60 },
-  { year: "2017", revenue: 300 },
-];
-
-const statusData = [
-  { year: "2015", completed: 100, pending: 30 },
-  { year: "2016", completed: 20, pending: 55 },
-  { year: "2017", completed: 90, pending: 120 },
-  { year: "2018", completed: 50, pending: 80 },
-  { year: "2019", completed: 120, pending: 150 },
-];
-
-const dashboardSearchItems = [
-  { title: "Doctors", detail: "168 doctors", target: "stats" },
-  { title: "Patients", detail: "487 patients", target: "stats" },
-  { title: "Appointments", detail: "485 appointments", target: "stats" },
-  { title: "Revenue", detail: "$62,523 total revenue", target: "stats" },
-  { title: "Revenue chart", detail: "Revenue by year", target: "charts" },
-  { title: "Status chart", detail: "Completed and pending status", target: "charts" },
-  { title: "Doctors list", detail: "View doctor records", target: "doctors-list" },
-  { title: "Patients list", detail: "View patient records", target: "patients-list" },
-];
-
-const notifications = [
-  {
-    initials: "C",
-    message: "Charlene Reed booked a new appointment.",
-    time: "4 mins ago",
-  },
-  {
-    initials: "C",
-    message: "Carl Kelly paid $250.00 for consultation.",
-    time: "1 hr ago",
-  },
-  {
-    initials: "T",
-    message: "Travis Trimble left a 5-star review.",
-    time: "3 hrs ago",
-  },
-];
+const Icon = ({ name, size = 16 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d={paths[name]} />
+  </svg>
+);
 
 const paths = {
   home: "M3 11l9-8 9 8v10h-6v-6H9v6H3z",
@@ -81,21 +52,21 @@ const paths = {
   logout: "M9 21H4V3h5M16 17l5-5-5-5M21 12H9",
 };
 
-const Icon = ({ name, size = 16 }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d={paths[name]} />
-  </svg>
-);
+const revenueData = [
+  { year: "2013", revenue: 60 },
+  { year: "2014", revenue: 110 },
+  { year: "2015", revenue: 180 },
+  { year: "2016", revenue: 60 },
+  { year: "2017", revenue: 300 },
+];
+
+const statusData = [
+  { year: "2015", completed: 100, pending: 30 },
+  { year: "2016", completed: 20, pending: 55 },
+  { year: "2017", completed: 90, pending: 120 },
+  { year: "2018", completed: 50, pending: 80 },
+  { year: "2019", completed: 120, pending: 150 },
+];
 
 const RevenueChart = () => (
   <div className="chart-container">
@@ -216,302 +187,269 @@ const StatProgress = ({ label, value, color }) => (
 );
 
 export const Dashboard = () => {
-  const [search, setSearch] = useState("");
-  const [openMenu, setOpenMenu] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
-  const searchResults = dashboardSearchItems.filter(({ title, detail }) =>
-    `${title} ${detail}`.toLowerCase().includes(search.trim().toLowerCase()),
-  );
-
-  const toggleMenu = (menu) => {
-    setOpenMenu((currentMenu) => (currentMenu === menu ? null : menu));
-  };
-
   return (
     <div className="dc">
-    <header className="dc-top">
-      <button
-        className="mobile-nav-toggle"
-        type="button"
-        aria-label="Toggle navigation"
-        aria-expanded={sidebarOpen}
-        onClick={() => setSidebarOpen((isOpen) => !isOpen)}
-      >
-        <Icon name="menu" size={20} />
-      </button>
-      <div className="dc-logo">
-        <span>DOC</span>
-        <span className="c">CURE</span>
-      </div>
-      <div className="dc-search-wrap">
-      <label className="dc-search">
-        <input
-          type="search"
-          placeholder="Search dashboard"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          onFocus={() => setOpenMenu(null)}
-          aria-label="Search dashboard information"
-          aria-expanded={Boolean(search.trim())}
-          aria-controls="dashboard-search-results"
+      <Header />
+
+      {sidebarOpen && (
+        <button
+          className="sidebar-backdrop"
+          type="button"
+          aria-label="Close navigation"
+          onClick={() => setSidebarOpen(false)}
         />
-        <Icon name="search" size={15} />
-      </label>
-      {search.trim() && (
-        <div className="header-menu search-results" id="dashboard-search-results">
-          <strong className="header-menu-title">Search results</strong>
-          {searchResults.length ? (
-            searchResults.map(({ title, detail, target }) => (
-              <a
-                className="search-result"
-                href={`#${target}`}
-                key={title}
-                onClick={() => setSearch("")}
-              >
-                <span>{title}</span>
-                <small>{detail}</small>
-              </a>
-            ))
-          ) : (
-            <p className="menu-empty">No dashboard information found.</p>
-          )}
-        </div>
       )}
-      </div>
-      <div className="dc-right">
-      <div className="header-control">
-        <button
-          className="dc-ico dc-bell"
-          type="button"
-          aria-label="Notifications"
-          aria-expanded={openMenu === "notifications"}
-          onClick={() => toggleMenu("notifications")}
-        >
-          <Icon name="bell" size={18} />
-          <b>{notifications.length}</b>
-        </button>
-        {openMenu === "notifications" && (
-          <div className="header-menu notification-menu">
-            <div className="header-menu-title">Notifications</div>
-            {notifications.map(({ initials, message, time }) => (
-              <div className="notification-item" key={message}>
-                <span className="mini">{initials}</span>
-                <span className="notification-copy">
-                  {message}
-                  <small>{time}</small>
-                </span>
-              </div>
-            ))}
-            <div className="menu-footer">Your latest notifications</div>
+      <aside className={`dc-side${sidebarOpen ? " mobile-open" : ""}`}>
+        <NavItem icon="home" href="/">
+          Dashboard
+        </NavItem>
+      </aside>
+
+      <main className="dc-main">
+        <div className="page-heading">
+          <div>
+            <div className="crumb">OVERVIEW / DASHBOARD</div>
+            <h1>
+              Welcome back, Admin <span aria-hidden="true">👋</span>
+            </h1>
+            <p>Here&apos;s what&apos;s happening at your clinic today.</p>
           </div>
-        )}
-      </div>
-      <div className="header-control">
-        <button
-          className="account-trigger"
-          type="button"
-          aria-label="Open account menu"
-          aria-expanded={openMenu === "account"}
-          onClick={() => toggleMenu("account")}
-        >
-          <span className="av">A</span>
-          <span>Admin</span>
-        </button>
-        {openMenu === "account" && (
-          <div className="header-menu account-menu">
-            <div className="account-summary">
-              <span className="av account-avatar">A</span>
-              <span>
-                <strong>Admin</strong>
-                <small>Administrator</small>
+          <div className="date-chip">
+            <span className="date-dot" />
+            Clinic overview
+          </div>
+        </div>
+
+        <section className="stats" id="stats">
+          <div className="card stat">
+            <div className="row">
+              <span
+                className="ring"
+                style={{ color: "#1ab7ea", borderColor: "#1ab7ea" }}
+              >
+                <Icon name="users" size={20} />
               </span>
+              <strong>168</strong>
             </div>
-            <Link
-              className="account-menu-item"
-              to="/profile"
-              onClick={() => setOpenMenu(null)}
-            >
-              <Icon name="user" size={15} />
-              My Profile
-            </Link>
-            <button
-              className="account-menu-item logout-item"
-              type="button"
-              onClick={() => navigate("/login")}
-            >
-              <Icon name="logout" size={15} />
-              Logout
-            </button>
+            <div className="lbl">Doctors</div>
+            <div className="stat-note">
+              <span>+8.2%</span> from last month
+            </div>
+            <StatProgress label="Doctors" value={53} color="#1ab7ea" />
           </div>
-        )}
-      </div>
-      </div>
-    </header>
+          <div className="card stat">
+            <div className="row">
+              <span
+                className="ring"
+                style={{ color: "#3f7d1d", borderColor: "#3f7d1d" }}
+              >
+                <Icon name="card" size={20} />
+              </span>
+              <strong>487</strong>
+            </div>
+            <div className="lbl">Patients</div>
+            <div className="stat-note">
+              <span>+12.5%</span> from last month
+            </div>
+            <StatProgress label="Patients" value={68} color="#3f7d1d" />
+          </div>
+          <div className="card stat">
+            <div className="row">
+              <span
+                className="ring"
+                style={{ color: "#d9261c", borderColor: "#d9261c" }}
+              >
+                <Icon name="user" size={20} />
+              </span>
+              <strong>485</strong>
+            </div>
+            <div className="lbl">Appointment</div>
+            <div className="stat-note">
+              <span>+4.3%</span> from last month
+            </div>
+            <StatProgress label="Appointments" value={46} color="#d9261c" />
+          </div>
+          <div className="card stat">
+            <div className="row">
+              <span
+                className="ring"
+                style={{ color: "#f5a30f", borderColor: "#f5a30f" }}
+              >
+                <Icon name="folder" size={20} />
+              </span>
+              <strong>$62523</strong>
+            </div>
+            <div className="lbl">Revenue</div>
+            <div className="stat-note">
+              <span>+9.8%</span> from last month
+            </div>
+            <StatProgress label="Revenue" value={72} color="#f5a30f" />
+          </div>
+        </section>
 
-    {sidebarOpen && (
-      <button
-        className="sidebar-backdrop"
-        type="button"
-        aria-label="Close navigation"
-        onClick={() => setSidebarOpen(false)}
-      />
-    )}
-    <aside className={`dc-side${sidebarOpen ? " mobile-open" : ""}`}>
-      <div className="sec">Main</div>
-      <NavItem icon="home" href="/" active>Dashboard</NavItem>
-      <NavItem icon="layout" href="/appointments">Appointments</NavItem>
-      <NavItem icon="users" href="/specialities">Specialities</NavItem>
-      <NavItem icon="user" href="/doctors">Doctors</NavItem>
-      <NavItem icon="user" href="/patients">Patients</NavItem>
-      <NavItem icon="star" href="/reviews">Reviews</NavItem>
-      <NavItem icon="bars" href="/transactions">Transactions</NavItem>
-      <NavItem icon="frame" href="/settings">Settings</NavItem>
-      <div className="sec">Pages</div>
-      <NavItem icon="file" href="/reports/appointment-reports">Reports</NavItem>
-      <div className="sub show">
-        <NavItem icon="file" href="/reports/appointment-reports">Appointment Reports</NavItem>
-        <NavItem icon="file" href="/reports/patient-reports">Patient Reports</NavItem>
-        <NavItem icon="file" href="/reports/revenue-reports">Revenue Reports</NavItem>
-        <NavItem icon="file" href="/reports/doctor-reports">Doctor Reports</NavItem>
-      </div>
-      <NavItem icon="user" href="/profile">Profile</NavItem>
-      <NavItem icon="user" href="/authentication/login">Login</NavItem>
-      <NavItem icon="user" href="/authentication/register">Register</NavItem>
-      <NavItem icon="user" href="/authentication/forgot-password">Forgot Password</NavItem>
-      <NavItem icon="user" href="/authentication/lock-screen">Lock Screen</NavItem>
-      <NavItem icon="alert" href="/error-pages/404-error">Error Pages</NavItem>
-      <NavItem icon="alert" href="/error-pages/500-error">500 Error</NavItem>
-      <NavItem icon="blank" href="/blank-page">Blank Page</NavItem>
-      <div className="sec">UI Interface</div>
-      <NavItem icon="frame" href="/components">Components</NavItem>
-      <NavItem icon="layout" href="/forms/basic-inputs">Forms</NavItem>
-      <NavItem icon="layout" href="/forms/input-groups">Input Groups</NavItem>
-      <NavItem icon="layout" href="/forms/horizontal-form">Horizontal Form</NavItem>
-      <NavItem icon="layout" href="/forms/vertical-form">Vertical Form</NavItem>
-      <NavItem icon="table" href="/tables/basic-tables">Tables</NavItem>
-      <NavItem icon="table" href="/tables/data-tables">Data Tables</NavItem>
-      <NavItem icon="code" href="/multi-level/level-1">Multi Level</NavItem>
-      <NavItem icon="code" href="/multi-level/level-2/level-3a">Level 3A</NavItem>
-      <NavItem icon="code" href="/multi-level/level-2/level-3b">Level 3B</NavItem>
-    </aside>
+        <section className="two" id="charts">
+          <div className="card">
+            <div className="card-heading">
+              <div>
+                <h2>Revenue overview</h2>
+                <p>Annual revenue performance</p>
+              </div>
+              <span className="card-period">2013–2017</span>
+            </div>
+            <div className="pad">
+              <RevenueChart />
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-heading">
+              <div>
+                <h2>Appointment status</h2>
+                <p>Completed vs pending</p>
+              </div>
+              <span className="card-period">2015–2019</span>
+            </div>
+            <div className="pad">
+              <StatusChart />
+            </div>
+          </div>
+        </section>
 
-    <main className="dc-main">
-      <div className="page-heading">
-        <div>
-          <div className="crumb">OVERVIEW / DASHBOARD</div>
-          <h1>Welcome back, Admin <span aria-hidden="true">👋</span></h1>
-          <p>Here&apos;s what&apos;s happening at your clinic today.</p>
-        </div>
-        <div className="date-chip">
-          <span className="date-dot" />
-          Clinic overview
-        </div>
-      </div>
-
-      <section className="stats" id="stats">
-        <div className="card stat">
-          <div className="row">
-            <span className="ring" style={{ color: "#1ab7ea", borderColor: "#1ab7ea" }}>
-              <Icon name="users" size={20} />
-            </span>
-            <strong>168</strong>
+        <section className="two">
+          <div className="card" id="doctors-list">
+            <div className="card-heading">
+              <div>
+                <h2>Top doctors</h2>
+                <p>Performance and patient reviews</p>
+              </div>
+              <a className="table-action" href="/doctors">
+                View doctors
+              </a>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Doctor Name</th>
+                  <th>Speciality</th>
+                  <th>Earned</th>
+                  <th>Reviews</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span className="mini">R</span>Dr. Ruby Perrin
+                  </td>
+                  <td>Dental</td>
+                  <td>$3200.00</td>
+                  <td className="stars">
+                    ★★★★<em>★</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini">D</span>Dr. Darren Elder
+                  </td>
+                  <td>Dental</td>
+                  <td>$3100.00</td>
+                  <td className="stars">★★★★★</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini">D</span>Dr. Deborah Angel
+                  </td>
+                  <td>Cardiology</td>
+                  <td>$4000.00</td>
+                  <td className="stars">
+                    ★★★<em>★★</em>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini">S</span>Dr. Sofia Brient
+                  </td>
+                  <td>Urology</td>
+                  <td>$3700.00</td>
+                  <td className="stars">★★★★★</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini">M</span>Dr. Marvin Campbell
+                  </td>
+                  <td>Orthopaedics</td>
+                  <td>$2900.00</td>
+                  <td className="stars">
+                    ★★★★<em>★</em>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div className="lbl">Doctors</div>
-          <div className="stat-note"><span>+8.2%</span> from last month</div>
-          <StatProgress label="Doctors" value={53} color="#1ab7ea" />
-        </div>
-        <div className="card stat">
-          <div className="row">
-            <span className="ring" style={{ color: "#3f7d1d", borderColor: "#3f7d1d" }}>
-              <Icon name="card" size={20} />
-            </span>
-            <strong>487</strong>
+          <div className="card" id="patients-list">
+            <div className="card-heading">
+              <div>
+                <h2>Recent patients</h2>
+                <p>Latest patient activity</p>
+              </div>
+              <a className="table-action" href="/patients">
+                View patients
+              </a>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Patient Name</th>
+                  <th>Phone</th>
+                  <th>Last Visit</th>
+                  <th>Paid</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span className="mini g">C</span>Charlene Reed
+                  </td>
+                  <td>8286329170</td>
+                  <td>20 Oct 2019</td>
+                  <td>$100.00</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini g">T</span>Travis Trimble
+                  </td>
+                  <td>2077299974</td>
+                  <td>22 Oct 2019</td>
+                  <td>$200.00</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini g">C</span>Carl Kelly
+                  </td>
+                  <td>2607247769</td>
+                  <td>21 Oct 2019</td>
+                  <td>$250.00</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini g">M</span>Michelle Fairfax
+                  </td>
+                  <td>5043686874</td>
+                  <td>21 Sep 2019</td>
+                  <td>$150.00</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className="mini g">G</span>Gina Moore
+                  </td>
+                  <td>9548207887</td>
+                  <td>18 Sep 2019</td>
+                  <td>$350.00</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div className="lbl">Patients</div>
-          <div className="stat-note"><span>+12.5%</span> from last month</div>
-          <StatProgress label="Patients" value={68} color="#3f7d1d" />
-        </div>
-        <div className="card stat">
-          <div className="row">
-            <span className="ring" style={{ color: "#d9261c", borderColor: "#d9261c" }}>
-              <Icon name="user" size={20} />
-            </span>
-            <strong>485</strong>
-          </div>
-          <div className="lbl">Appointment</div>
-          <div className="stat-note"><span>+4.3%</span> from last month</div>
-          <StatProgress label="Appointments" value={46} color="#d9261c" />
-        </div>
-        <div className="card stat">
-          <div className="row">
-            <span className="ring" style={{ color: "#f5a30f", borderColor: "#f5a30f" }}>
-              <Icon name="folder" size={20} />
-            </span>
-            <strong>$62523</strong>
-          </div>
-          <div className="lbl">Revenue</div>
-          <div className="stat-note"><span>+9.8%</span> from last month</div>
-          <StatProgress label="Revenue" value={72} color="#f5a30f" />
-        </div>
-      </section>
-
-      <section className="two" id="charts">
-        <div className="card">
-          <div className="card-heading">
-            <div><h2>Revenue overview</h2><p>Annual revenue performance</p></div>
-            <span className="card-period">2013–2017</span>
-          </div>
-          <div className="pad"><RevenueChart /></div>
-        </div>
-        <div className="card">
-          <div className="card-heading">
-            <div><h2>Appointment status</h2><p>Completed vs pending</p></div>
-            <span className="card-period">2015–2019</span>
-          </div>
-          <div className="pad"><StatusChart /></div>
-        </div>
-      </section>
-
-      <section className="two">
-        <div className="card" id="doctors-list">
-          <div className="card-heading">
-            <div><h2>Top doctors</h2><p>Performance and patient reviews</p></div>
-            <a className="table-action" href="/doctors">View doctors</a>
-          </div>
-          <table>
-            <thead>
-              <tr><th>Doctor Name</th><th>Speciality</th><th>Earned</th><th>Reviews</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><span className="mini">R</span>Dr. Ruby Perrin</td><td>Dental</td><td>$3200.00</td><td className="stars">★★★★<em>★</em></td></tr>
-              <tr><td><span className="mini">D</span>Dr. Darren Elder</td><td>Dental</td><td>$3100.00</td><td className="stars">★★★★★</td></tr>
-              <tr><td><span className="mini">D</span>Dr. Deborah Angel</td><td>Cardiology</td><td>$4000.00</td><td className="stars">★★★<em>★★</em></td></tr>
-              <tr><td><span className="mini">S</span>Dr. Sofia Brient</td><td>Urology</td><td>$3700.00</td><td className="stars">★★★★★</td></tr>
-              <tr><td><span className="mini">M</span>Dr. Marvin Campbell</td><td>Orthopaedics</td><td>$2900.00</td><td className="stars">★★★★<em>★</em></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="card" id="patients-list">
-          <div className="card-heading">
-            <div><h2>Recent patients</h2><p>Latest patient activity</p></div>
-            <a className="table-action" href="/patients">View patients</a>
-          </div>
-          <table>
-            <thead>
-              <tr><th>Patient Name</th><th>Phone</th><th>Last Visit</th><th>Paid</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><span className="mini g">C</span>Charlene Reed</td><td>8286329170</td><td>20 Oct 2019</td><td>$100.00</td></tr>
-              <tr><td><span className="mini g">T</span>Travis Trimble</td><td>2077299974</td><td>22 Oct 2019</td><td>$200.00</td></tr>
-              <tr><td><span className="mini g">C</span>Carl Kelly</td><td>2607247769</td><td>21 Oct 2019</td><td>$250.00</td></tr>
-              <tr><td><span className="mini g">M</span>Michelle Fairfax</td><td>5043686874</td><td>21 Sep 2019</td><td>$150.00</td></tr>
-              <tr><td><span className="mini g">G</span>Gina Moore</td><td>9548207887</td><td>18 Sep 2019</td><td>$350.00</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-  </div>
+        </section>
+      </main>
+    </div>
   );
 };
