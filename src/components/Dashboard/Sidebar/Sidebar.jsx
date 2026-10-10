@@ -1,3 +1,4 @@
+import { FaUserDoctor } from "react-icons/fa6";
 import { MdDashboard, MdPersonOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const Sidebar = () => {
           <span>Users</span>
         </Link>
         <Link to="/doctor" className="item">
-          <MdPersonOutline size={15} aria-hidden="true" />
+          <FaUserDoctor size={15} aria-hidden="true" />
           <span>Doctors</span>
         </Link>
       </aside>
