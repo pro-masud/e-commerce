@@ -80,7 +80,9 @@ const Header = () => {
             </button>
             {showNotifications && (
               <div className="header-menu notification-menu">
-                <div className="header-menu-title">Notifications</div>
+                <div className="header-menu-title">
+                  Notifications <span>clear</span>
+                </div>
 
                 {notification.map((notification) => (
                   <div className="notification-item" key={notification.id}>
