@@ -13,6 +13,10 @@ const Sidebar = () => {
           <MdPersonOutline size={15} aria-hidden="true" />
           <span>Users</span>
         </Link>
+        <Link to="/doctor" className="item">
+          <MdPersonOutline size={15} aria-hidden="true" />
+          <span>Doctors</span>
+        </Link>
       </aside>
     </>
   );
