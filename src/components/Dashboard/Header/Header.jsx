@@ -1,4 +1,29 @@
+import { useState } from "react";
+
 const Header = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const notification = [
+    {
+      id: 1,
+      initials: "C",
+      message: "Charlene Reed booked a new appointment.",
+      time: "4 mins ago",
+    },
+    {
+      id: 2,
+      initials: "C",
+      message: "Carl Kelly paid $250.00 for consultation.",
+      time: "1 hr ago",
+    },
+    {
+      id: 3,
+      initials: "T",
+      message: "Travis Trimble left a 5-star review.",
+      time: "3 hrs ago",
+    },
+  ];
+
   return (
     <>
       <header className="dc-top">
@@ -31,7 +56,13 @@ const Header = () => {
         </div>
         <div className="dc-right">
           <div className="header-control">
-            <span className="dc-ico dc-bell" aria-label="Notifications">
+            <button
+              className="dc-ico dc-bell"
+              type="button"
+              aria-label="Notifications"
+              aria-expanded={showNotifications}
+              onClick={() => setShowNotifications((isOpen) => !isOpen)}
+            >
               <svg
                 width="18"
                 height="18"
@@ -45,8 +76,25 @@ const Header = () => {
               >
                 <path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2ZM10 21h4" />
               </svg>
-              <b>3</b>
-            </span>
+              <b>{notification ? notification.length : 0}</b>
+            </button>
+            {showNotifications && (
+              <div className="header-menu notification-menu">
+                <div className="header-menu-title">Notifications</div>
+
+                {notification.map((notification) => (
+                  <div className="notification-item" key={notification.id}>
+                    <span className="mini">{notification.initials}</span>
+                    <span className="notification-copy">
+                      {notification.message}
+                      <small>{notification.time}</small>
+                    </span>
+                  </div>
+                ))}
+
+                <div className="menu-footer">Your latest notifications</div>
+              </div>
+            )}
           </div>
           <div className="account-trigger">
             <span className="av">A</span>
