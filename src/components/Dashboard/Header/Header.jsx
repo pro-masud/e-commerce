@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
 
   const notification = [
     {
@@ -60,7 +61,6 @@ const Header = () => {
               className="dc-ico dc-bell"
               type="button"
               aria-label="Notifications"
-              aria-expanded={showNotifications}
               onClick={() => setShowNotifications((isOpen) => !isOpen)}
             >
               <svg
@@ -96,10 +96,34 @@ const Header = () => {
               </div>
             )}
           </div>
-          <div className="account-trigger">
+          <button
+            className="account-trigger"
+            type="button"
+            onClick={() => setShowAdmin((openAdmin) => !openAdmin)}
+          >
             <span className="av">A</span>
             <span>Admin</span>
-          </div>
+          </button>
+          {showAdmin && (
+            <div className="header-menu account-menu">
+              <div className="account-summary">
+                <span className="av account-avatar">A</span>
+                <span>
+                  <strong>Admin</strong>
+                  <small>Administrator</small>
+                </span>
+              </div>
+
+              <div className="admin-profile-details">
+                <span>Account type</span>
+                <strong>Administrator</strong>
+              </div>
+
+              <button className="account-menu-item" type="button">
+                Close
+              </button>
+            </div>
+          )}
         </div>
       </header>
     </>
