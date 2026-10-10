@@ -10,83 +10,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import Header from "../../components/Dashboard/Header/Header";
+import Sidebar from "../../components/Dashboard/Sidebar/Sidebar";
 import "./dashboard.css";
 
 export const Dashboard = () => (
   <div className="dc">
-    <header className="dc-top">
-      <div className="dc-logo">
-        <span>DOC</span>
-        <span className="c">CURE</span>
-      </div>
-      <div className="dc-search-wrap">
-        <label className="dc-search">
-          <input
-            type="search"
-            placeholder="Search dashboard"
-            aria-label="Search dashboard information"
-          />
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-4-4" />
-          </svg>
-        </label>
-      </div>
-      <div className="dc-right">
-        <div className="header-control">
-          <span className="dc-ico dc-bell" aria-label="Notifications">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2ZM10 21h4" />
-            </svg>
-            <b>3</b>
-          </span>
-        </div>
-        <div className="account-trigger">
-          <span className="av">A</span>
-          <span>Admin</span>
-        </div>
-      </div>
-    </header>
-
-    <aside className="dc-side">
-      <a href="/" className="item on">
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z" />
-        </svg>
-        <span>Dashboard</span>
-      </a>
-    </aside>
-
+    <Header />
+    <Sidebar />
     <main className="dc-main">
       <div className="page-heading">
         <div>
@@ -422,34 +353,50 @@ export const Dashboard = () => (
             </thead>
             <tbody>
               <tr>
-                <td><span className="mini">R</span>Dr. Ruby Perrin</td>
+                <td>
+                  <span className="mini">R</span>Dr. Ruby Perrin
+                </td>
                 <td>Dental</td>
                 <td>$3200.00</td>
-                <td className="stars">★★★★<em>★</em></td>
+                <td className="stars">
+                  ★★★★<em>★</em>
+                </td>
               </tr>
               <tr>
-                <td><span className="mini">D</span>Dr. Darren Elder</td>
+                <td>
+                  <span className="mini">D</span>Dr. Darren Elder
+                </td>
                 <td>Dental</td>
                 <td>$3100.00</td>
                 <td className="stars">★★★★★</td>
               </tr>
               <tr>
-                <td><span className="mini">D</span>Dr. Deborah Angel</td>
+                <td>
+                  <span className="mini">D</span>Dr. Deborah Angel
+                </td>
                 <td>Cardiology</td>
                 <td>$4000.00</td>
-                <td className="stars">★★★<em>★★</em></td>
+                <td className="stars">
+                  ★★★<em>★★</em>
+                </td>
               </tr>
               <tr>
-                <td><span className="mini">S</span>Dr. Sofia Brient</td>
+                <td>
+                  <span className="mini">S</span>Dr. Sofia Brient
+                </td>
                 <td>Urology</td>
                 <td>$3700.00</td>
                 <td className="stars">★★★★★</td>
               </tr>
               <tr>
-                <td><span className="mini">M</span>Dr. Marvin Campbell</td>
+                <td>
+                  <span className="mini">M</span>Dr. Marvin Campbell
+                </td>
                 <td>Orthopaedics</td>
                 <td>$2900.00</td>
-                <td className="stars">★★★★<em>★</em></td>
+                <td className="stars">
+                  ★★★★<em>★</em>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -475,31 +422,41 @@ export const Dashboard = () => (
             </thead>
             <tbody>
               <tr>
-                <td><span className="mini g">C</span>Charlene Reed</td>
+                <td>
+                  <span className="mini g">C</span>Charlene Reed
+                </td>
                 <td>8286329170</td>
                 <td>20 Oct 2019</td>
                 <td>$100.00</td>
               </tr>
               <tr>
-                <td><span className="mini g">T</span>Travis Trimble</td>
+                <td>
+                  <span className="mini g">T</span>Travis Trimble
+                </td>
                 <td>2077299974</td>
                 <td>22 Oct 2019</td>
                 <td>$200.00</td>
               </tr>
               <tr>
-                <td><span className="mini g">C</span>Carl Kelly</td>
+                <td>
+                  <span className="mini g">C</span>Carl Kelly
+                </td>
                 <td>2607247769</td>
                 <td>21 Oct 2019</td>
                 <td>$250.00</td>
               </tr>
               <tr>
-                <td><span className="mini g">M</span>Michelle Fairfax</td>
+                <td>
+                  <span className="mini g">M</span>Michelle Fairfax
+                </td>
                 <td>5043686874</td>
                 <td>21 Sep 2019</td>
                 <td>$150.00</td>
               </tr>
               <tr>
-                <td><span className="mini g">G</span>Gina Moore</td>
+                <td>
+                  <span className="mini g">G</span>Gina Moore
+                </td>
                 <td>9548207887</td>
                 <td>18 Sep 2019</td>
                 <td>$350.00</td>
