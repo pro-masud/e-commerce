@@ -6,6 +6,10 @@ const privateRouter = [
     path: "/",
     element: <Dashboard />,
   },
+  {
+    path: "/user",
+    element: <Dashboard />,
+  },
 ];
 
 export default privateRouter;
