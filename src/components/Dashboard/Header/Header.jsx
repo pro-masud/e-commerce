@@ -82,7 +82,11 @@ const Header = () => {
               <div className="header-menu notification-menu">
                 <div className="header-menu-title">
                   Notifications{" "}
-                  <button type="button" onClick={() => setNotifications([])}>
+                  <button
+                    className="notification-clear"
+                    type="button"
+                    onClick={() => setNotifications([])}
+                  >
                     clear
                   </button>
                 </div>
