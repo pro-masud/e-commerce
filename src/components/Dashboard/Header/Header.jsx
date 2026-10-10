@@ -4,7 +4,7 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
 
-  const notification = [
+  const [notifications, setNotifications] = useState([
     {
       id: 1,
       initials: "C",
@@ -23,7 +23,7 @@ const Header = () => {
       message: "Travis Trimble left a 5-star review.",
       time: "3 hrs ago",
     },
-  ];
+  ]);
 
   return (
     <>
@@ -76,23 +76,30 @@ const Header = () => {
               >
                 <path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2ZM10 21h4" />
               </svg>
-              <b>{notification ? notification.length : 0}</b>
+              <b>{notifications ? notifications.length : 0}</b>
             </button>
             {showNotifications && (
               <div className="header-menu notification-menu">
                 <div className="header-menu-title">
-                  Notifications <span>clear</span>
+                  Notifications{" "}
+                  <button type="button" onClick={() => setNotifications([])}>
+                    clear
+                  </button>
                 </div>
 
-                {notification.map((notification) => (
-                  <div className="notification-item" key={notification.id}>
-                    <span className="mini">{notification.initials}</span>
-                    <span className="notification-copy">
-                      {notification.message}
-                      <small>{notification.time}</small>
-                    </span>
-                  </div>
-                ))}
+                {notifications.length > 0 ? (
+                  notifications.map((notification) => (
+                    <div className="notification-item" key={notification.id}>
+                      <span className="mini">{notification.initials}</span>
+                      <span className="notification-copy">
+                        {notification.message}
+                        <small>{notification.time}</small>
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="menu-empty">No notifications.</p>
+                )}
 
                 <div className="menu-footer">Your latest notifications</div>
               </div>
